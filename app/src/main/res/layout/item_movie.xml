@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space8">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPosterImage"
+            android:contentDescription="@string/movie_image"
+            android:layout_width="@dimen/space108"
+            android:layout_height="@dimen/space108"
+            android:paddingEnd="@dimen/space8"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="RtlSymmetry" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMovieName"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/space0"
+            android:text="@string/movie_name"
+            android:textSize="@dimen/text20"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ivPosterImage"
+            app:layout_constraintTop_toTopOf="@id/ivPosterImage"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvDescription"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/space0"
+            android:textSize="@dimen/text16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvMovieName"
+            app:layout_constraintTop_toBottomOf="@+id/tvMovieName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
