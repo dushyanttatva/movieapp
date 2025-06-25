@@ -3,7 +3,10 @@ package com.example.movieapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieapp.common.hide
 import com.example.movieapp.common.show
@@ -12,6 +15,7 @@ import com.example.movieapp.domain.model.Movie
 import com.example.movieapp.presentation.movie_list.MovieListAdapter
 import com.example.movieapp.presentation.movie_list.MovieListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -25,38 +29,44 @@ class MainActivity : ComponentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.fetchMovieList()
         setupRecyclerView()
         observeMovieList()
     }
 
     private fun setupRecyclerView() {
         movieListAdapter = MovieListAdapter(
-            emptyList(),
             onItemClick = {movie ->  goToMovieDetail(movie)}
         )
         binding.movieListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
+            setHasFixedSize(false)
             adapter = movieListAdapter
+        }
+        lifecycleScope.launch {
+            movieListAdapter.loadStateFlow.collect{ loadStates ->
+                when {
+                    loadStates.refresh is LoadState.Loading -> {
+                        binding.progressBar.show()
+                    }
+                    loadStates.refresh is LoadState.Error -> {
+                        binding.progressBar.hide()
+                    }
+                    loadStates.append is LoadState.Error -> {
+                        binding.progressBar.hide()
+                    }
+                    else -> {
+                        binding.progressBar.hide()
+                    }
+                }
+            }
         }
     }
 
     private fun observeMovieList() {
         lifecycleScope.launch {
-            viewModel.list.collect {
-                when{
-                    it.isLoading -> {
-                        binding.progressBar.show()
-                    }
-                    it.error.isNotEmpty() -> {
-                        binding.progressBar.hide()
-                    }
-                    it.data?.isNotEmpty() == true -> {
-                        binding.progressBar.hide()
-                        movieListAdapter.updateMovieList(it.data!!)
-                        binding.movieListRecyclerView.adapter = movieListAdapter
-                    }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.movies.collectLatest { pagingData ->
+                    movieListAdapter.submitData(pagingData)
                 }
             }
         }

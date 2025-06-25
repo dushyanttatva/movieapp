@@ -1,9 +1,11 @@
 package com.example.movieapp.data.repository
 
+import androidx.paging.PagingSource
 import com.example.movieapp.data.mapper.toDomain
 import com.example.movieapp.data.network.ApiService
 import com.example.movieapp.data.network.SafeApiRequest
 import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.data.paging.MovieListPagingSource
 import com.example.movieapp.domain.repository.MovieRepository
 
 class MovieRepositoryImpl(
@@ -17,5 +19,9 @@ class MovieRepositoryImpl(
         return response.results.map {
             it.toDomain()
         }
+    }
+
+    override fun getPagingSource(): PagingSource<Int, Movie> {
+        return MovieListPagingSource(this)
     }
 }

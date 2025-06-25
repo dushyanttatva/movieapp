@@ -2,15 +2,26 @@ package com.example.movieapp.presentation.movie_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.databinding.ItemMovieBinding
 import com.example.movieapp.domain.model.Movie
 
 class MovieListAdapter(
-    private var movieList: List<Movie>,
     private val onItemClick: (Movie) -> Unit
-): RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder>() {
+): PagingDataAdapter<Movie, MovieListAdapter.MovieListViewHolder>(DifferCallBack) {
+
+    object DifferCallBack: DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
 
     inner class MovieListViewHolder(
         private val itemBinding: ItemMovieBinding
@@ -42,14 +53,9 @@ class MovieListAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        val currentMovie = movieList[position]
-        holder.bind(currentMovie)
-    }
-
-    override fun getItemCount(): Int = movieList.size
-
-    fun updateMovieList(newList: List<Movie>){
-        movieList = newList
-        notifyDataSetChanged()
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.bind(movie)
+        }
     }
 }
