@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/space16"
+            tools:context=".presentation.movie_details.MovieDetailsActivity">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMovieName"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="@dimen/space10"
+                android:text="@string/movie_name"
+                android:textSize="@dimen/text20"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivPosterImage"
+                android:contentDescription="@string/movie_image"
+                android:layout_width="@dimen/space150"
+                android:layout_height="@dimen/space250"
+                android:layout_marginBottom="@dimen/space10"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toBottomOf="@+id/tvMovieName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="RtlSymmetry" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvReleaseDate"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/space0"
+                android:layout_marginBottom="@dimen/space10"
+                android:textSize="@dimen/text16"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivPosterImage" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDescription"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/space0"
+                android:layout_marginBottom="@dimen/space10"
+                android:textSize="@dimen/text16"
+                android:text="@string/release_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvReleaseDate" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvCast"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/space0"
+                android:layout_marginBottom="@dimen/space10"
+                android:textSize="@dimen/text16"
+                android:textStyle="bold"
+                android:text="@string/cast"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movieCastRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tvCast"
+                tools:listitem="@layout/item_cast"/>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/movieCastRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

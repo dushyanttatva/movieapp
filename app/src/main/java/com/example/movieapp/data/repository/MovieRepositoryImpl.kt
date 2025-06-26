@@ -6,6 +6,7 @@ import com.example.movieapp.data.network.ApiService
 import com.example.movieapp.data.network.SafeApiRequest
 import com.example.movieapp.domain.model.Movie
 import com.example.movieapp.data.paging.MovieListPagingSource
+import com.example.movieapp.domain.model.MovieCast
 import com.example.movieapp.domain.repository.MovieRepository
 
 class MovieRepositoryImpl(
@@ -17,6 +18,15 @@ class MovieRepositoryImpl(
             apiService.getMovieList(page)
         }
         return response.results.map {
+            it.toDomain()
+        }
+    }
+
+    override suspend fun getMovieCast(movieId: Int): List<MovieCast> {
+        val response = apiRequest {
+            apiService.getMovieCast(movieId)
+        }
+        return response.cast.map {
             it.toDomain()
         }
     }
